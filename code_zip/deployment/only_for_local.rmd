@@ -1,0 +1,709 @@
+---
+title: "**신세계 등장인물 인식**"
+author: '프로젝트 방밤빵'
+output: 
+  flexdashboard::flex_dashboard:
+    theme: simplex
+    includes: 
+    orientation: rows
+    vertical_layout: scroll
+    highlight: zenburn
+rsconnect::setAccountInfo(name='sunnuuu', token='E10BAF040ECD23DBF56CB0E452A6E62C', secret='mrVjeK65UIdcdzYq9EgNXGTqUkJLKjr9DSfRu8Ie'):
+runtime : shiny
+fontsize : 20
+
+---
+
+```{r global, include=FALSE}
+
+library(flexdashboard)
+library(shiny)
+library(shinydashboard)
+library(rsconnect)
+library(magick)
+
+```
+
+HOME {data-orientation=rows}
+=====================================
+
+```{r analysis1}
+
+cat("프로젝트 소개")
+
+```
+
+1. 주제 및 목표 : 영화 <신세계> 속, 등장 인물 4인을 분류하는 딥러닝 신경망 구현하기 <br>
+2. 팀명 : 프로젝트 방밤빵(강현주, 김현지, 방지원, 위선우)
+
+```{r analysis2}
+
+cat("웹 사이트 소개")
+
+```
+
+1. INTRO : 방밤빵의 프로젝트와 영화 속 프로젝트 <신세계> 소개
+2. CAST : 영화 <신세계> 속, 등장인물 4인에 대한 설명
+3. DEEP LEARNING TEST LINK : 신경망 구현 관련 영상으로 연결(유튜브)
+4. ONLY FOR LOCAL : 웹으로 구현하지 못한 부분(시도 중)
+
+ABOUT PROJECT {data-navmenu="INTRO"}
+=====================================
+
+```{r analysis3}
+
+cat("프로젝트명 : 프로젝트 방밤빵(강현주, 김현지, 방지원, 위선우)
+주제 : 영화 <신세계> 속, 등장 인물 4인을 분류하는 딥러닝 신경망 구현")
+
+```
+
+
+Row {.tabset .tabset-fade}
+-------------------------------------
+
+### 1. 데이터 수집
+
+분류해야 하는 4명의 사진을, 각각 1000장씩 얼굴만 잘라낸 사진으로 수집했다.
+
+```{r analysis4}
+
+cat('1. 파이썬 코드를 이용한 웹 크롤링 : 구글, 네이버, 다음, bing')
+cat('2. 유튜브 동영상 캡쳐 : 한캡쳐 플러스(도구) 사용')
+
+```
+
+### 2. 데이터 정제
+
+```{r analysis5}
+
+cat('1. 파이썬 opencv - face dictection으로 스크롤링한 사진에서 얼굴만 잘라내기')
+cat('2. 파이선 shuffle 코드로 사진 섞기 : train과 test 데이터를 골고루 나누기 위해서')
+cat('3. 파이썬 rotate 코드로 사진을 랜덤 회전하여 2배 늘리기 : 양질의 데이터를 추가하기 위해서')
+cat('4. 파이썬 resize 코드로 딥러닝 신경망에 맞춰서 사진 크기 변경하기')
+
+```
+
+### 3. 모델 생성
+
+```{r analysis6}
+
+cat('1. model_1 : VGG6 + F.C4 + PHOTO(4000)')
+cat('2. model_2 : VGG6 + F.C4 + PHOTO(8000) > 성능은 좋으나 detection 결과가 좋지 않음')
+cat('3. mode_3 : VGG6 + F.C5 + PHOTO(8000) > 오버피팅')
+cat('4. model_3-1 : model_3에서 dropout 0.5로 올린 모델')
+cat('5. model_4 : VGG8 + F.C2 + PHOTO(8000) > ★최종모델★')
+cat('6. model_5 : VGG6 + F.C3 + PHOTO(8000)')
+
+```
+
+### 4. Obejct Dictection
+
+```{r analysis7}
+
+cat('파이썬 opencv - front face 모듈을 이용하여 주어진 사진에서 얼굴만 잡아낼 수 있도록 하였다.' )
+
+```
+
+```{r analysis8}
+
+image_3people <- image_read("https://postfiles.pstatic.net/MjAxOTEwMTRfMzgg/MDAxNTcxMDMzMjk5MjE2.wbzjWo0SbD9KiCYVBdxTIj4LGyA-J8a_F_Z0KWpqvxkg.o9b7mvL3cPxYHBnPkGJT6tV1FesEEtlVkGF70pBe7ssg.JPEG.oh_boyy/KakaoTalk_20191013_160455862.jpg?type=w966")
+
+renderImage({
+  # Numeric operators
+  tmpfile <- image_3people %>%
+    image_write(tempfile(fileext='gif'), format = 'gif')
+  # Return a list
+  list(src = tmpfile, contentType = "image/jpeg")
+})
+
+```
+
+### 5. 동영상 처리
+
+```{r analysis9}
+
+cat('완성된 model_4를 object dictection과 합쳐, 동영상에서 주요 인물의 얼굴을 인식하도록 하였다.')
+
+```
+
+```{r analysis10}
+
+image_5 <- image_read("https://postfiles.pstatic.net/MjAxOTEwMTRfMTMy/MDAxNTcxMDMzMTU1MDAx.UENUWpFudOkZcDNVGf4M7a1_YC8Gv1ZtTLtLh_rGMJQg.FvPiGGcmCfd0YkL8Zet3cv8yYHI10CvAVQ90ggVCqi0g.GIF.oh_boyy/aaa.gif?type=w966")
+
+renderImage({
+  # Numeric operators
+  tmpfile <- image_5 %>%
+    image_write(tempfile(fileext='gif'), format = 'gif')
+  # Return a list
+  list(src = tmpfile, contentType = "image/jpeg")
+})
+
+```
+
+### 6. 끝...?
+
+```{r analysis11}
+
+cat('1. 신경망 웹구현 : R Shiny + R Flexdashboard')
+cat('2. 신경망 웹구현 : Python Flask')
+cat('3. 신경망 모델 배포용 설치파일 구현 : Python exe')
+cat('4. 딥러닝 모델 성능 개선 : cv가 아닌 yolo로!')
+cat('5. 4인 외의 더 많은 사람을 분류할 수 있는 딥러닝 신경망 구현')
+
+```
+
+ABOUT NEW-WORLD {data-navmenu="INTRO"}
+=====================================
+
+```{r analysis12}
+
+cat("작전명 : 신세계 프로젝트
+작전설계자 : 경찰청 수사 기획과")
+
+```
+
+2004년 1월, 전국구 조직 재범파, 제일파, 북대문파가 합쳐져 기업형 조직인 '골드문'이 출범한다. <br>
+경찰청 수사기획과에서는 골드문 타파를 위한 관련 작전을 설계한다. <br>
+이에 화교 출신 신입 경찰관 이자성(이정재)를 골드문 내 경찰 요원으로 잠입시키는데......
+
+---
+
+Row {.tabset .tabset-fade}
+-------------------------------------
+
+### 신세계 프로젝트
+
+```{r analysis13}
+
+image_1 <- image_read("http://blogfiles.naver.net/20130225_121/dadani1_1361762743640hat5w_JPEG/0001.jpg")
+
+renderImage({
+  # Numeric operators
+  tmpfile <- image_1 %>%
+    image_write(tempfile(fileext='jpg'), format = 'jpg')
+  # Return a list
+  list(src = tmpfile, contentType = "image/jpeg")
+})
+
+```
+
+### 골드문 그룹소개
+
+```{r analysis14}
+
+image_2 <- image_read("http://blogfiles.naver.net/20130225_209/dadani1_1361762795745EUJ6x_JPEG/0002.jpg")
+
+renderImage({
+  # Numeric operators
+  tmpfile <- image_2 %>%
+    image_write(tempfile(fileext='jpg'), format = 'jpg')
+  # Return a list
+  list(src = tmpfile, contentType = "image/jpeg")
+})
+
+```
+
+### 골드문 조직도
+
+```{r analysis15}
+
+image_3 <- image_read("http://blogfiles.naver.net/20130225_294/dadani1_1361762830496vNU4Y_JPEG/0003.jpg")
+
+renderImage({
+  # Numeric operators
+  tmpfile <- image_3 %>%
+    image_write(tempfile(fileext='jpg'), format = 'jpg')
+  # Return a list
+  list(src = tmpfile, contentType = "image/jpeg")
+})
+
+```
+
+이중구(박성웅) {data-navmenu="CAST"}
+=====================================
+
+>이중구(박성웅) :: 골드문 서열 4위의 상무이사
+
+```{r analysis16}
+
+cat("살려는 드릴게.")
+cat("죽기 딱 좋은 날씨네.")
+cat("가기 전에 한 대 정도는 펴도 되잖아?")
+
+```
+
+---
+
+Row {.tabset .tabset-fade}
+-------------------------------------
+
+### 스틸컷_1 {data-height=630}
+
+```{r analysis17}
+
+image_sw <- image_read("https://movie-phinf.pstatic.net/20130215_244/1360894083887Grmyr_JPEG/movie_image.jpg?type=m886_590_2")
+
+renderImage({
+  # Numeric operators
+  tmpfile <- image_sw %>%
+    image_write(tempfile(fileext='jpg'), format = 'jpg')
+  # Return a list
+  list(src = tmpfile, contentType = "image/jpeg")
+})
+
+```
+
+### 스틸컷_2
+
+```{r analysis18}
+
+image_sw2 <- image_read("https://movie-phinf.pstatic.net/20130215_262/1360894084017P1i8V_JPEG/movie_image.jpg?type=m665_443_2")
+
+renderImage({
+  # Numeric operators
+  tmpfile <- image_sw2 %>%
+    image_write(tempfile(fileext='jpg'), format = 'jpg')
+  # Return a list
+  list(src = tmpfile, contentType = "image/jpeg")
+})
+
+```
+
+### 스틸컷_3
+
+```{r analysis19}
+
+image_sw3 <- image_read("https://movie-phinf.pstatic.net/20130215_147/1360894084144hNmBJ_JPEG/movie_image.jpg?type=m886_590_2")
+
+renderImage({
+  # Numeric operators
+  tmpfile <- image_sw3 %>%
+    image_write(tempfile(fileext='jpg'), format = 'jpg')
+  # Return a list
+  list(src = tmpfile, contentType = "image/jpeg")
+})
+
+```
+
+이자성(이정재) {data-navmenu="CAST"}
+=====================================
+
+>이자성(이정재) :: 정청계 2인자, 경찰 스파이
+
+```{r analysis20}
+
+cat("거 중구형 장난이 너무 심한 거 아니오?")
+cat("하다못해 저 깡패 새끼들도 나를 믿고 따르는데, 왜 너네들은 날 못 믿는데?")
+cat("약속 했잖습니까.... 이번엔 진짜 끝이라고!")
+
+```
+
+---
+
+Row {.tabset .tabset-fade}
+-------------------------------------
+
+### 스틸컷_1 {data-height=630}
+
+```{r analysis21}
+
+image_jj <- image_read("https://movie-phinf.pstatic.net/20130326_32/1364283939430VRMiT_JPEG/movie_image.jpg?type=m886_590_2")
+
+renderImage({
+  # Numeric operators
+  tmpfile <- image_jj %>%
+    image_write(tempfile(fileext='jpg'), format = 'jpg')
+  # Return a list
+  list(src = tmpfile, contentType = "image/jpeg")
+})
+
+```
+
+### 스틸컷_2
+
+```{r analysis22}
+
+image_jj2 <- image_read("https://movie-phinf.pstatic.net/20130130_97/13595273843877gWgo_JPEG/movie_image.jpg?type=m665_443_2")
+
+renderImage({
+  # Numeric operators
+  tmpfile <- image_jj2 %>%
+    image_write(tempfile(fileext='jpg'), format = 'jpg')
+  # Return a list
+  list(src = tmpfile, contentType = "image/jpeg")
+})
+
+```
+
+### 스틸컷_3
+
+```{r analysis23}
+
+image_jj3 <- image_read("https://movie-phinf.pstatic.net/20130114_241/13581475300732J5qi_JPEG/movie_image.jpg?type=m886_590_2")
+
+renderImage({
+  # Numeric operators
+  tmpfile <- image_jj3 %>%
+    image_write(tempfile(fileext='jpg'), format = 'jpg')
+  # Return a list
+  list(src = tmpfile, contentType = "image/jpeg")
+})
+
+```
+
+
+강과장(최민식) {data-navmenu="CAST"}
+=====================================
+
+>강과장(최민식) :: 경찰, 신세계 프로젝트를 만든 장본인
+
+```{r analysis24}
+
+cat("너, 나하고 일 하나 같이 하자.")
+cat("이거 진짜 깡패새끼 다 됐구만.")
+cat("이러면 판이 나가리가 되는데.")
+
+```
+
+---
+
+Row {.tabset .tabset-fade}
+-------------------------------------
+
+### 스틸컷_1 {data-height=630}
+
+```{r analysis25}
+
+image_ms <- image_read("https://movie-phinf.pstatic.net/20120622_267/1340328756544MHaGl_JPEG/movie_image.jpg?type=m886_590_2")
+
+renderImage({
+  # Numeric operators
+  tmpfile <- image_ms %>%
+    image_write(tempfile(fileext='jpg'), format = 'jpg')
+  # Return a list
+  list(src = tmpfile, contentType = "image/jpeg")
+})
+
+```
+
+### 스틸컷_2
+
+```{r analysis26}
+
+image_ms2 <- image_read("https://movie-phinf.pstatic.net/20130114_42/1358148208964gyXAU_JPEG/movie_image.jpg?type=m886_590_2")
+
+renderImage({
+  # Numeric operators
+  tmpfile <- image_ms2 %>%
+    image_write(tempfile(fileext='jpg'), format = 'jpg')
+  # Return a list
+  list(src = tmpfile, contentType = "image/jpeg")
+})
+
+```
+
+### 스틸컷_3
+
+```{r analysis27}
+
+image_ms3 <- image_read("https://movie-phinf.pstatic.net/20130131_224/1359601581851QiYPY_JPEG/movie_image.jpg?type=m886_590_2")
+
+renderImage({
+  # Numeric operators
+  tmpfile <- image_ms3 %>%
+    image_write(tempfile(fileext='jpg'), format = 'jpg')
+  # Return a list
+  list(src = tmpfile, contentType = "image/jpeg")
+})
+
+
+```
+
+정청(황정민) {data-navmenu="CAST"}
+=====================================
+
+>정청(황정민) :: 골드문 서열 3위의 전무이사
+
+```{r analysis28}
+
+cat("다 잘될거야. 브라덜은 이 x같은 형만 믿으면 되야.")
+cat("들어와, 들어와, 들어와!")
+cat("독하게 굴어.... 그래야 니가 살아.....")
+
+```
+
+---
+
+Row {.tabset .tabset-fade}
+-------------------------------------
+
+### 스틸컷_1 {data-height=630}
+
+```{r analysis29}
+
+image_jm <- image_read("https://movie-phinf.pstatic.net/20130204_213/1359947663577guEkj_JPEG/movie_image.jpg?type=m886_590_2")
+
+renderImage({
+  # Numeric operators
+  tmpfile <- image_jm %>%
+    image_write(tempfile(fileext='jpg'), format = 'jpg')
+  # Return a list
+  list(src = tmpfile, contentType = "image/jpeg")
+})
+
+```
+
+
+### 스틸컷_2
+
+```{r analysis30}
+
+image_jm2 <- image_read("https://movie-phinf.pstatic.net/20120920_269/13481235703592mlk1_JPEG/movie_image.jpg?type=m886_590_2")
+
+renderImage({
+  # Numeric operators
+  tmpfile <- image_jm2 %>%
+    image_write(tempfile(fileext='jpg'), format = 'jpg')
+  # Return a list
+  list(src = tmpfile, contentType = "image/jpeg")
+})
+
+```
+
+### 스틸컷_3
+
+```{r analysis31}
+
+image_jm3 <- image_read("https://movie-phinf.pstatic.net/20130131_193/1359601581419MrA8e_JPEG/movie_image.jpg?type=m886_590_2")
+
+renderImage({
+  # Numeric operators
+  tmpfile <- image_jm3 %>%
+    image_write(tempfile(fileext='jpg'), format = 'jpg')
+  # Return a list
+  list(src = tmpfile, contentType = "image/jpeg")
+})
+
+```
+
+DEEP LEARNING TEST LINK {data-orientation=rows}
+=====================================
+
+```{r analysis32}
+
+cat('<신세계> 예고편')
+
+```
+
+https://www.youtube.com/watch?v=fQkOxxWkw6Q
+
+---
+
+```{r analysis33}
+
+cat('이중구(박성웅) 스테이크씬')
+
+```
+
+https://www.youtube.com/watch?v=dOoFULN9N6w
+
+---
+
+```{r analysis34}
+
+cat('파이썬 exe에서 신경망  돌아가는 영상')
+
+```
+
+https://www.youtube.com/watch?v=yEPYEBJnF5s
+
+---
+
+```{r analysis36}
+
+cat('r flexdashboard에서 신경망 돌아가는 영상')
+
+```
+
+https://www.youtube.com/watch?v=pOuHzCq-KIM
+
+
+ONLY FOR LOCAL {data-orientation=rows}
+=====================================
+
+
+```{r, context="ui"}
+
+fileInput("file1", "사진을 넣으세요 :",
+                multiple = TRUE,
+                accept = c(".png",".jpg",".jpeg"))
+
+```
+
+```{r, context="server"}
+
+dataload <- reactive({
+  req(input$file1)
+  j = input$file1
+  return (j[,4])
+})
+
+output$plot_bar <- renderPrint({
+  
+    j2 <- dataload()
+    
+    library(keras) 
+    library(tensorflow)
+    
+    tf$compat$v1$reset_default_graph()
+    
+    # input
+    x <- tf$compat$v1$placeholder(tf$float32, shape(NULL, 128L , 128L , 3L))
+    y_onehot <- tf$compat$v1$placeholder(tf$float32, shape(NULL,4L)) 
+    keep_prob <- tf$compat$v1$placeholder(tf$float32)
+    training <- tf$compat$v1$placeholder("bool", name='training' )
+    y_label <- tf$argmax(y_onehot, 1L)
+    
+    # conv1_1
+    W1_1 <- tf$get_variable(name="W1_1", shape=list(3L,3L,3L,16L))
+    L1_1 <- tf$nn$conv2d(x,W1_1,strides=c(1L,1L,1L,1L), padding='SAME')
+    b1_1 <- tf$Variable(tf$ones((16L)), name='b1_1') 
+    L1_1 <- L1_1 + b1_1
+    batch_z1_1 = tf$contrib$layers$batch_norm(L1_1, scale='True', is_training=training) 
+    y1_1_relu <- tf$nn$leaky_relu(batch_z1_1)
+    
+    # conv1_2
+    W1_2 <- tf$get_variable(name="W1_2", shape=list(3L,3L,16L,16L))
+    L1_2 <- tf$nn$conv2d(y1_1_relu,W1_2,strides=c(1,1,1,1), padding='SAME')
+    b1_2 <- tf$Variable(tf$ones((16L)), name='b1_2')
+    L1_2 <- L1_2 + b1_2
+    batch_z1_2 = tf$contrib$layers$batch_norm(L1_2, scale='True', is_training=training) 
+    y1_2_relu = tf$nn$leaky_relu(batch_z1_2)
+    L1_2 = tf$nn$max_pool(y1_2_relu, ksize=c(1,2,2,1), strides=c(1,2,2,1), padding='SAME')
+    
+    # conv2_1
+    W2_1 <- tf$get_variable(name="W2_1", shape=list(3L,3L,16L,32L))
+    L2_1 <- tf$nn$conv2d(L1_2,W2_1,strides=c(1,1,1,1), padding='SAME')
+    b2_1 <- tf$Variable(tf$ones((32L)), name='b2_1')
+    L2_1 <- L2_1 + b2_1
+    batch_z2_1 = tf$contrib$layers$batch_norm(L2_1, scale='True', is_training=training) 
+    y2_1_relu <- tf$nn$leaky_relu(batch_z2_1)
+    
+    # conv2_2
+    W2_2 <- tf$get_variable(name="W2_2", shape=list(3L,3L,32L,32L))
+    L2_2 <- tf$nn$conv2d(y2_1_relu,W2_2,strides=c(1,1,1,1), padding='SAME')
+    b2_2 <- tf$Variable(tf$ones((32L)), name='b2_2') 
+    L2_2 <- L2_2 + b2_2
+    batch_z2_2 = tf$contrib$layers$batch_norm(L2_2, scale='True', is_training=training) 
+    y2_2_relu <- tf$nn$leaky_relu(batch_z2_2)
+    L2_2 <- tf$nn$max_pool(y2_2_relu, ksize=c(1,2,2,1), strides=c(1,2,2,1), padding='SAME')
+    
+    # conv3_1
+    W3_1 <- tf$get_variable(name="W3_1", shape=list(3L,3L,32L,64L))
+    L3_1 <- tf$nn$conv2d(L2_2,W3_1,strides=c(1,1,1,1), padding='SAME')
+    b3_1 <- tf$Variable(tf$ones((64L)), name='b3_1') 
+    L3_1 <- L3_1 + b3_1
+    batch_z3_1 = tf$contrib$layers$batch_norm(L3_1, scale='True', is_training=training) 
+    y3_1_relu <- tf$nn$leaky_relu(batch_z3_1) 
+    
+    # conv3_2
+    W3_2 <- tf$get_variable(name="W3_2", shape=list(3L,3L,64L,64L))
+    L3_2 <- tf$nn$conv2d(y3_1_relu,W3_2,strides=c(1,1,1,1), padding='SAME')
+    b3_2 <- tf$Variable(tf$ones((64L)), name='b3_2')
+    L3_2 <- L3_2 + b3_2
+    batch_z3_2 = tf$contrib$layers$batch_norm(L3_2, scale='True', is_training=training) 
+    y3_2_relu <- tf$nn$leaky_relu(batch_z3_2) 
+    L3_2 <- tf$nn$max_pool(y3_2_relu, ksize=c(1,2,2,1), strides=c(1,2,2,1), padding='SAME')
+    
+    # conv4_1
+    W4_1 <- tf$get_variable(name="W4_1", shape=list(3L,3L,64L,128L))
+    L4_1 <- tf$nn$conv2d(L3_2,W4_1,strides=c(1,1,1,1), padding='SAME')
+    b4_1 <- tf$Variable(tf$ones((128L)), name='b4_1') 
+    L4_1 <- L4_1 + b4_1
+    batch_z4_1 = tf$contrib$layers$batch_norm(L4_1, scale='True', is_training=training) 
+    y4_1_relu <- tf$nn$leaky_relu(batch_z4_1) 
+    
+    # conv4_2
+    W4_2 <- tf$get_variable(name="W4_2", shape=list(3L,3L,128L,128L))
+    L4_2 <- tf$nn$conv2d(y4_1_relu,W4_2,strides=c(1,1,1,1), padding='SAME')
+    b4_2 <- tf$Variable(tf$ones((128L)), name='b4_2')
+    L4_2 <- L4_2 + b4_2
+    batch_z4_2 = tf$contrib$layers$batch_norm(L4_2, scale='True', is_training=training) 
+    y4_2_relu <- tf$nn$leaky_relu(batch_z4_2) 
+    L4_2 <- tf$nn$max_pool(y4_2_relu, ksize=c(1,2,2,1), strides=c(1,2,2,1), padding='SAME')
+    
+    # FC1
+    W5 <- tf$get_variable(name="W5", shape=list(8L*8L*128L,2000L))
+    b5 <- tf$Variable(tf$ones((2000L)), name='b5') 
+    L5 <- tf$reshape(L4_2,c(-1L,as.integer(8L*8L*128L)))
+    y5 <- tf$matmul(L5,W5) + b5
+    batch_z5 = tf$contrib$layers$batch_norm(y5, scale='True', is_training=training) 
+    y5_relu <- tf$nn$leaky_relu(batch_z5) 
+    r5_drop <- tf$nn$dropout(y5_relu, keep_prob)
+    
+    #FC2
+    W6 <- tf$get_variable(name='W6', shape=c(2000L, 2000L)) 
+    b6 <- tf$Variable(tf$ones((2000L)), name='b6') 
+    y6 <- tf$matmul(r5_drop,W6) + b6
+    batch_z6 = tf$contrib$layers$batch_norm(y6, scale='True', is_training=training) 
+    y6_relu <- tf$nn$leaky_relu(batch_z6) 
+    r6_drop <- tf$nn$dropout(y6_relu, keep_prob)
+    
+    # output
+    W7 <- tf$get_variable(name='W7', shape=c(2000L, 4L)) 
+    b7 <- tf$Variable(tf$ones((4L)), name='b7') 
+    y7 <- tf$matmul(r6_drop,W7) + b7
+    y_hat <- tf$nn$softmax(y7) 
+    y_predict <- tf$argmax(y_hat, 1L)
+    
+    saver <- tf$train$Saver()
+    
+    ### Setting session and restore
+    sess <- tf$Session()
+    init <- tf$global_variables_initializer()
+    sess$run(init)
+    
+    k2 <- paste(getwd(), 'vgg8_128_model',sep='/')
+    saver$restore(sess, k2)
+    
+    img = image_load(path = j2, target_size = c(128,128))
+    img = image_to_array(img)
+    img <- img[, , c(3, 2, 1)]
+    
+    img_mat2 <- tf$reshape(img,c(-1L, 128L, 128L,3L))
+    img_mat3 <- sess$run(img_mat2)
+    res <- sess$run(y_predict, feed_dict = dict(x = img_mat3, keep_prob=1.0, training=FALSE))
+    
+    if (res=='0'){
+      anw <- '이중구(박성웅)'
+    } else if (res=='1'){
+      anw <- '이자성(이정재)'
+    } else if (res=='2'){
+      anw <- '강과장(최민식)'
+    } else {
+      anw <- '정청(황정민)'
+    }
+    
+    return (anw)
+})
+
+```
+
+
+```{r, context="session"}
+
+fluidPage(
+  textOutput('plot_bar')
+)
+```
+
+<br>
+
+```{r}
+
+renderImage({
+  req(input$file1)
+  list(src=input$file1$datapath,alt="alternative text")
+})
+
+```
