@@ -9,3 +9,7 @@
 - 위선우(9408172@gmail.com)
 
 ## :movie_camera: 결과 영상 링크
+- [신세계 얼굴 인식 영상](https://www.youtube.com/watch?v=fQkOxxWkw6Q&t=4s)
+- [이중구(박성웅) 얼굴 인식 영상](https://www.youtube.com/watch?v=dOoFULN9N6w)
+- [파이썬 exe 실행 영상](https://www.youtube.com/watch?v=yEPYEBJnF5s)
+- [R-flexdashboard 실행 영상](https://www.youtube.com/watch?v=pOuHzCq-KIM)
