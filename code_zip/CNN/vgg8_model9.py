@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Oct  8 16:39:03 2019
-
-@author: knit
-"""
-
 ### SSGTEST vgg8 128 , inputsize = 128*128
 # 모듈공간
 import numpy as np
