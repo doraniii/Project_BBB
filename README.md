@@ -2,8 +2,6 @@
 - 사용 언어 및 툴 : python, tensorflow, open-cv, beautifulsoup, matplotlib, numpy, r, r-markdown, r-flexdashboard, pyqt
 - gpu 사용
 
-- [테스트](Project_BBB/code_zip/CNN)
-
 ## :bread: 프로젝트 방밤빵
 - 강현주(qwas6435@gmail.com)
 - 김현지(annjee.kim@gmail.com)
