@@ -8,7 +8,7 @@ output:
     orientation: rows
     vertical_layout: scroll
     highlight: zenburn
-rsconnect::setAccountInfo(name='sunnuuu', token='E10BAF040ECD23DBF56CB0E452A6E62C', secret='mrVjeK65UIdcdzYq9EgNXGTqUkJLKjr9DSfRu8Ie'):
+rsconnect::setAccountInfo(name='sunnuuu', token='', secret=''):
 runtime : shiny
 fontsize : 20
 
